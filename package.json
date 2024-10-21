@@ -1,5 +1,5 @@
 {
-  "name": "jekuari-utils",
+  "name": "@jekuari/jekuari-utils",
   "version": "1.0.0",
   "description": "Jekuari utils library",
   "main": "dist/index.js",
