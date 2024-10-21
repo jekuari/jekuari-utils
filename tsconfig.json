@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "ESNext",
-    "jsx": "react-jsx",
+    "target": "es5",
+    "module": "commonjs",
     "declaration": true,
-    "declarationDir": "dist/types",
-    "moduleResolution": "node",
+    "outDir": "./types",
+    "strict": true,
+    "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
