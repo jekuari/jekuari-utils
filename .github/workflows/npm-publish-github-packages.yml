@@ -17,7 +17,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/ 
       - run: yarn install
-      - run: yarn build
+      - run: yarn build:babel
       - name: Extract version from tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
