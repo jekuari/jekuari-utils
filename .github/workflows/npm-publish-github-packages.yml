@@ -5,83 +5,28 @@ on:
     types: [created]
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      # Step 1: Checkout the repository
       - uses: actions/checkout@v4
-
-      # Step 2: Set up Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      # Step 3: Install dependencies using yarn (or npm if preferred)
+          registry-url: https://registry.npmjs.org/ 
       - run: yarn install
-
-      # Step 4: Run your build process to compile the package
       - run: yarn build
-
-      # Step 5: Copy node_modules to the dist directory
-      - run: mkdir -p dist && cp -r node_modules dist/node_modules
-
-      # Step 6: Copy package.json to dist and modify for production use
-      # Using jq to create a lightweight package.json (install jq first)
-      - run: |
-          sudo apt-get install jq
+      - name: Extract version from tag
+        run: |
           VERSION=${GITHUB_REF#refs/tags/}
           VERSION=${VERSION#v}
-          echo "Updating version to $VERSION"
-          cat package.json | jq --arg version "$VERSION" '{
-            name: .name,
-            version: $version,
-            main: .main,
-            dependencies: .dependencies,
-            peerDependencies: .peerDependencies,
-            scripts: .scripts
-          }' > dist/package.json
-
-      # Step 7: Copy the LICENSE and README (optional)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV 
+      - name: Update package.json version
+        run: npm version ${{ env.VERSION }} --no-git-tag-version --allow-same-version
+      - run: npm pack --dry-run --json > dist/package.json
       - run: cp LICENSE README.md dist/
-
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      # Step 1: Checkout the repository again in the publish stage
-      - uses: actions/checkout@v4
-
-      # Step 2: Set up Node.js environment
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-
-      # Step 3: Publish the package, but only from the dist folder using --prefix
-      - run: npm publish --prefix ./dist --access public --registry=https://npm.pkg.github.com/
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      # Step 1: Checkout the repository again in the publish stage
-      - uses: actions/checkout@v4
-
-      # Step 2: Set up Node.js environment
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-
-      # Step 3: Publish the package to npm (and Yarn registry)
       - run: npm publish --prefix ./dist --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
