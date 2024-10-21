@@ -56,7 +56,7 @@ jobs:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
 
-      # Step 3: Publish the package, but only from the dist folder
-      - run: npm publish --workspace ./dist --access public
+      # Step 3: Publish the package, but only from the dist folder using --prefix
+      - run: npm publish --prefix ./dist --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
