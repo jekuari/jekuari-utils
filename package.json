@@ -2,6 +2,7 @@
   "name": "@jekuari/utils",
   "version": "1.0.0",
   "description": "Jekuari utils library",
+  "type": "module",
   "main": "dist/index.js",
   "author": "Ricardo Feregrino (Jekuari)",
   "license": "MIT",
