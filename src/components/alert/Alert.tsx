@@ -55,7 +55,7 @@ export const AlertContext = createContext({
           iconBackground?: string;
           textColor?: string;
         }
-      | string
+      | string,
   ) => void;
   error: (
     content:
@@ -64,7 +64,7 @@ export const AlertContext = createContext({
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => void;
   warning: (
     content:
@@ -73,7 +73,7 @@ export const AlertContext = createContext({
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => void;
   success: (
     content:
@@ -82,7 +82,7 @@ export const AlertContext = createContext({
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => void;
 });
 
@@ -125,7 +125,7 @@ Alert.Provider = ({ children }: { children: React.ReactNode }) => {
           iconBackground?: string;
           textColor?: string;
         }
-      | string
+      | string,
   ) => {
     if (typeof content === "string") {
       setAlertActive(true);
@@ -151,7 +151,7 @@ Alert.Provider = ({ children }: { children: React.ReactNode }) => {
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => {
     if (typeof content === "string") {
       setAlertActive(true);
@@ -183,7 +183,7 @@ Alert.Provider = ({ children }: { children: React.ReactNode }) => {
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => {
     if (typeof content === "string") {
       setAlertActive(true);
@@ -213,7 +213,7 @@ Alert.Provider = ({ children }: { children: React.ReactNode }) => {
           icon?: React.FunctionComponent<any>;
           background?: string;
         }
-      | string
+      | string,
   ) => {
     if (typeof content === "string") {
       setAlertActive(true);
@@ -285,13 +285,13 @@ Alert.Contents = ({
       await animate(
         "polyline",
         { pathLength: 0, pathOffset: 1 },
-        { duration: 0 }
+        { duration: 0 },
       );
       await animate("path", { pathLength: 1 }, { duration: 0.4 });
       await animate(
         "polyline",
         { pathLength: 1, pathOffset: 0 },
-        { duration: 0.4 }
+        { duration: 0.4 },
       );
     };
 
@@ -358,7 +358,7 @@ Alert.Contents = ({
   );
 };
 
-export default Alert;
+export { Alert };
 
 export const useAlert = () => {
   const alertContext = useContext(AlertContext);
