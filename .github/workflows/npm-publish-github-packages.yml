@@ -30,6 +30,7 @@ jobs:
       - run: |
           sudo apt-get install jq
           VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${VERSION#v}
           echo "Updating version to $VERSION"
           cat package.json | jq --arg version "$VERSION" '{
             name: .name,
