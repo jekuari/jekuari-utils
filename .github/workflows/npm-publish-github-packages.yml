@@ -64,3 +64,24 @@ jobs:
       - run: npm publish --prefix ./dist --access public --registry=https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      # Step 1: Checkout the repository again in the publish stage
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      # Step 3: Publish the package to npm (and Yarn registry)
+      - run: npm publish --prefix ./dist --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
