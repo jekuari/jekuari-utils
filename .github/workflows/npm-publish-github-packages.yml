@@ -29,12 +29,15 @@ jobs:
       # Using jq to create a lightweight package.json (install jq first)
       - run: |
           sudo apt-get install jq
-          cat package.json | jq '{
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "Updating version to $VERSION"
+          cat package.json | jq --arg version "$VERSION" '{
             name: .name,
-            version: .version,
-            main: "index.js",
+            version: $version,
+            main: .main,
             dependencies: .dependencies,
-            peerDependencies: .peerDependencies
+            peerDependencies: .peerDependencies,
+            scripts: .scripts
           }' > dist/package.json
 
       # Step 7: Copy the LICENSE and README (optional)
