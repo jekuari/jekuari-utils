@@ -91,4 +91,9 @@ Overlay.Contents = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+export const useOverlay = () => {
+  const overlayContext = useContext(OverlayContext);
+  return overlayContext;
+};
+
 export { Overlay };
