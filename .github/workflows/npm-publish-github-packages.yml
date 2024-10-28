@@ -27,7 +27,6 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV 
       - name: Update package.json version
         run: npm version ${{ env.VERSION }} --no-git-tag-version --allow-same-version
-      - run: npm pack --dry-run --json > dist/package.json
       - run: cp LICENSE README.md dist/
       - run: npm publish --prefix ./dist --access public
         env:
